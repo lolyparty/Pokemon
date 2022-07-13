@@ -1,5 +1,12 @@
 import { Box, Text } from '@chakra-ui/react';
 import Head from 'next/head';
+import Image from 'next/image';
+
+
+
+export const myLoader = ({src})=>{
+    return src
+  }
 
 export async function getStaticPaths() {
     // Call an external API endpoint to get posts
@@ -41,8 +48,28 @@ const EachPokemon = ({onePokemon})=>{
             <title>{onePokemon.name}</title>
 
         </Head>
-        <Box display='flex' justifyContent='center' alignitems='center' minW='fill' minH='fill' color='#000'>
-            <Text>{`Hello this is ${onePokemon.name}`}</Text>  
+        <Box p={2} color='white'>
+            {console.log(onePokemon)}
+            <Text textAlign='center' fontSize='30px' fontWeight={900}>{`${onePokemon.name.substring(0,1).toUpperCase()}${onePokemon.name.substring(1)}`}</Text>  
+            <Box position='relative' w='80%' height='400px' mx='auto'>
+                <Image loader={myLoader} src={`${onePokemon.sprites.front_default}`} alt={`${onePokemon.name.substring(0,1).toUpperCase()} ${onePokemon.name.substring(1)} Image`} layout='fill' unoptimized /> 
+            </Box>
+            <Box>
+                <Text fontWeight={700} fontSize={20}>Abilities</Text> 
+                <ul>
+                    {onePokemon.abilities.map((ability, index)=>{
+                        return <li key={index}>{ability.ability.name}</li>  
+                    })}
+                </ul>
+            </Box>
+            <Box my={10}>
+                <Text fontWeight={700} fontSize={20}>Moves</Text> 
+                <ul>
+                    {onePokemon.moves.map((ability, index)=>{
+                        return <li key={index}>{ability.move.name}</li>   
+                    })}
+                </ul>
+            </Box>
         </Box>
     </>
 }
