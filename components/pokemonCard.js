@@ -2,7 +2,6 @@ import { Link, Box, Text } from "@chakra-ui/react"
 import Image from 'next/image';
 
 
-
 export const myLoader = ({src})=>{
     return src
   }

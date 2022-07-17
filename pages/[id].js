@@ -49,7 +49,6 @@ const EachPokemon = ({onePokemon})=>{
 
         </Head>
         <Box p={2} color='white'>
-            {console.log(onePokemon)}
             <Text textAlign='center' fontSize='30px' fontWeight={900}>{`${onePokemon.name.substring(0,1).toUpperCase()}${onePokemon.name.substring(1)}`}</Text>  
             <Box position='relative' w='80%' height='400px' mx='auto'>
                 <Image loader={myLoader} src={`${onePokemon.sprites.front_default}`} alt={`${onePokemon.name.substring(0,1).toUpperCase()} ${onePokemon.name.substring(1)} Image`} layout='fill' unoptimized /> 

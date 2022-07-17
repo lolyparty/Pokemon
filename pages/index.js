@@ -1,5 +1,6 @@
 import Head from 'next/head';
-import { Box} from '@chakra-ui/react';
+import { useState } from 'react';
+import { Box, Input } from '@chakra-ui/react';
 import PokemonCard from '../components/pokemonCard';
 
 export const getStaticProps = async (context) => {
@@ -8,20 +9,26 @@ export const getStaticProps = async (context) => {
 
   const pokemonDetails = res.results.map(async (pokemon) => {
     const details = await fetch(pokemon.url);
-    const pokemonData = await details.json()
-    return pokemonData
-  })
+    const pokemonData = await details.json();
+    return pokemonData;
+  });
 
-  const results = await Promise.all(pokemonDetails)
+  const results = await Promise.all(pokemonDetails);
 
   return {
-    props:{
-      pokemonDetails: results
-    }
-  }
-}
+    props: {
+      pokemonDetails: results,
+    },
+  };
+};
 
-export default function Home({pokemonDetails}) {
+export default function Home({ pokemonDetails }) {
+  const [search, setSearch] = useState('');
+
+  const onChange = (e)=>{
+    setSearch(e.target.value);
+  }
+
   return (
     <>
       <Head>
@@ -29,14 +36,29 @@ export default function Home({pokemonDetails}) {
         <meta name="description" content="A simple Pokemon website" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {console.log(pokemonDetails[0])} 
+      {console.log(pokemonDetails[0])}
       <Box>
-        
-        <Box display='flex' justifyContent='space-evenly' flexWrap='wrap' gap='10px' py={10} >
-          {pokemonDetails.map((pokemon, index) => <PokemonCard key={index} {...pokemon}/>)}
+        <Box display="flex" justifyContent="center">
+          <Input
+            color="white"
+            maxW="250px"
+            placeholder="Search"
+            _placeholder={{ color: '#fff' }}
+            onChange={onChange}
+          />
+        </Box>
+        <Box
+          display="flex"
+          justifyContent="space-evenly"
+          flexWrap="wrap"
+          gap="10px"
+          py={10}
+        >
+          {pokemonDetails.filter(e=> !!e.name.toLowerCase().includes(search.toLowerCase())).map((pokemon, index) => (
+            <PokemonCard key={index} {...pokemon} />
+          ))}
         </Box>
       </Box>
-      
     </>
-  )
+  );
 }
